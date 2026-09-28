@@ -25,10 +25,11 @@ jobs:
       - name: Fetch orders from Shopify
         env:
           SHOPIFY_STORE: ubpnh9-84.myshopify.com
-          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
         run: |
-          if [ -z "$SHOPIFY_TOKEN" ]; then
-            echo "::warning::Secret SHOPIFY_TOKEN is not set. Add it in Settings > Secrets and variables > Actions. Data was not refreshed."
+          if [ -z "$SHOPIFY_CLIENT_ID" ] || [ -z "$SHOPIFY_CLIENT_SECRET" ]; then
+            echo "::warning::Secrets SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET are not set. Add them in Settings > Secrets and variables > Actions. Data was not refreshed."
             exit 0
           fi
           node scripts/fetch.mjs

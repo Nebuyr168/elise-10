@@ -2,7 +2,8 @@
 // an anonymised daily aggregate to data/elise-10.json.
 //
 // Usage:
-//   SHOPIFY_STORE=xxx.myshopify.com SHOPIFY_TOKEN=shpat_... node scripts/fetch.mjs
+//   SHOPIFY_STORE=xxx.myshopify.com SHOPIFY_CLIENT_ID=... SHOPIFY_CLIENT_SECRET=... node scripts/fetch.mjs
+//     (Dev Dashboard app credentials, exchanged for a 24h token via the client credentials grant)
 //   node scripts/fetch.mjs --orders raw-orders.json
 //     (aggregate a saved GraphQL result instead of calling the API)
 
@@ -50,12 +51,30 @@ const DISCOUNT_QUERY = `
     }
   }`;
 
+let accessToken = null;
+
+async function getAccessToken(store) {
+  if (accessToken) return accessToken;
+  const clientId = process.env.SHOPIFY_CLIENT_ID;
+  const clientSecret = process.env.SHOPIFY_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    throw new Error("SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET environment variables are required");
+  }
+  const res = await fetch(`https://${store}/admin/oauth/access_token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ grant_type: "client_credentials", client_id: clientId, client_secret: clientSecret }),
+  });
+  if (!res.ok) throw new Error(`Token request failed ${res.status}: ${await res.text()}`);
+  const json = await res.json();
+  accessToken = json.access_token;
+  return accessToken;
+}
+
 async function graphql(query, variables) {
   const store = process.env.SHOPIFY_STORE;
-  const token = process.env.SHOPIFY_TOKEN;
-  if (!store || !token) {
-    throw new Error("SHOPIFY_STORE and SHOPIFY_TOKEN environment variables are required");
-  }
+  if (!store) throw new Error("SHOPIFY_STORE environment variable is required");
+  const token = await getAccessToken(store);
   const res = await fetch(`https://${store}/admin/api/${API_VERSION}/graphql.json`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Shopify-Access-Token": token },

@@ -11,8 +11,11 @@ Une GitHub Action (`.github/workflows/refresh.yml`) interroge Shopify toutes les
 heures et réécrit `data/elise-10.json`. Elle peut aussi être lancée à la main
 depuis l'onglet **Actions**, workflow *Refresh Elise-10 data*, bouton **Run workflow**.
 
-Elle a besoin du secret `SHOPIFY_TOKEN` : token d'une application personnalisée
-Shopify avec les droits `read_orders` et `read_discounts`.
+Elle a besoin des secrets `SHOPIFY_CLIENT_ID` et `SHOPIFY_CLIENT_SECRET` :
+identifiants d'une application créée dans le Dev Dashboard Shopify, installée
+sur la boutique, avec les portées `read_orders`, `read_all_orders` et
+`read_discounts`. Le script les échange contre un token valable 24 h
+(client credentials grant) à chaque exécution.
 
 ## Mise à jour manuelle sans token
 
