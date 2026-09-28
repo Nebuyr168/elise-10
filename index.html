@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elise-10 · Phlame</title>
+<meta name="description" content="Ventes réalisées avec le code promo Elise-10 sur la boutique Phlame.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --surface: #FBF7EF;
+    --surface-2: #F3EBDD;
+    --ink: #150D06;
+    --ink-2: #5A4636;
+    --muted: #7A6650;
+    --line: #E4D6BD;
+    --gold: #C9A24D;
+    --gold-deep: #A07D36;
+    --brown: #5A4636;
+    --tan: #D9C39A;
+    --wash: rgba(201, 162, 77, 0.12);
+    --display: "Bodoni Moda", "Playfair Display", Georgia, serif;
+    --body: "Jost", "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --surface: #150D06;
+      --surface-2: #1F150B;
+      --ink: #F2E7D4;
+      --ink-2: #C7B394;
+      --muted: #A48D6C;
+      --line: #3B2A1A;
+      --gold: #E3C684;
+      --gold-deep: #C9A24D;
+      --brown: #B59A76;
+      --tan: #7A6446;
+      --wash: rgba(227, 198, 132, 0.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --surface: #150D06;
+    --surface-2: #1F150B;
+    --ink: #F2E7D4;
+    --ink-2: #C7B394;
+    --muted: #A48D6C;
+    --line: #3B2A1A;
+    --gold: #E3C684;
+    --gold-deep: #C9A24D;
+    --brown: #B59A76;
+    --tan: #7A6446;
+    --wash: rgba(227, 198, 132, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 16px 64px;
+  }
+
+  /* Header */
+  .brand {
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin: 0 0 28px;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+  }
+  h1 em { font-style: italic; }
+  .code-meta {
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 62ch;
+  }
+  .code-meta .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-meta .status::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold-deep);
+  }
+  .code-meta .status.off::before { background: var(--tan); }
+
+  /* Hero figure + controls */
+  .hero {
+    margin: 44px 0 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  @media (min-width: 760px) {
+    .hero { grid-template-columns: 1.3fr 1fr; align-items: end; }
+  }
+  .hero-label { color: var(--muted); margin: 0 0 6px; }
+  .hero-value {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(56px, 11vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0;
+    font-variant-numeric: lining-nums;
+  }
+  .hero-value small {
+    font-size: 0.42em;
+    letter-spacing: 0;
+    margin-left: 0.15em;
+  }
+  .hero-sub { color: var(--ink-2); margin: 12px 0 0; }
+
+  .controls {
+    display: grid;
+    gap: 14px;
+  }
+  .field { display: grid; gap: 6px; }
+  .field label { color: var(--muted); font-size: 14px; }
+  select, input[type="date"] {
+    font: inherit;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-bottom-color: var(--ink-2);
+    border-radius: 0;
+    padding: 9px 12px;
+    width: 100%;
+    min-height: 44px;
+  }
+  select { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ink-2) 50%), linear-gradient(135deg, var(--ink-2) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+  .range { display: none; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .range.open { display: grid; }
+  .segmented {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    padding: 3px;
+    gap: 2px;
+  }
+  .segmented button {
+    font: inherit;
+    color: var(--ink-2);
+    background: transparent;
+    border: 0;
+    padding: 8px 14px;
+    min-height: 38px;
+    cursor: pointer;
+  }
+  .segmented button[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  /* KPIs */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    margin: 0 0 48px;
+  }
+  @media (min-width: 560px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 900px) { .kpis { grid-template-columns: repeat(4, 1fr); } }
+  .kpi {
+    padding: 18px 18px 20px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .kpi dt { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+  .kpi dd {
+    margin: 0;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi dd small { font-weight: 400; color: var(--muted); font-size: 14px; display: block; margin-top: 4px; }
+
+  /* Charts */
+  h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 26px;
+    margin: 0 0 4px;
+  }
+  .section-intro { color: var(--muted); margin: 0 0 20px; }
+  .charts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px 32px;
+  }
+  @media (min-width: 860px) { .charts { grid-template-columns: 1fr 1fr; } }
+  .chart { min-width: 0; }
+  .chart.wide { grid-column: 1 / -1; }
+  .chart h3 {
+    font-weight: 500;
+    font-size: 17px;
+    margin: 0 0 2px;
+  }
+  .chart p { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+  .plot { position: relative; height: 260px; }
+  .chart.wide .plot { height: 300px; }
+  .plot canvas { width: 100% !important; height: 100% !important; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+    font-size: 14px; color: var(--ink-2);
+    margin: 10px 0 0; padding: 0; list-style: none;
+  }
+  .legend li { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { width: 12px; height: 12px; display: inline-block; }
+
+  /* Empty states */
+  .empty {
+    border: 1px solid var(--line);
+    padding: 40px 24px;
+    text-align: left;
+    color: var(--ink-2);
+    max-width: 60ch;
+  }
+  .empty strong { font-family: var(--display); font-weight: 400; font-size: 24px; display: block; color: var(--ink); margin-bottom: 6px; }
+  [hidden] { display: none !important; }
+
+  /* Table view */
+  .table-toggle {
+    margin: 44px 0 0;
+    font: inherit;
+    background: none;
+    border: 1px solid var(--ink-2);
+    color: var(--ink);
+    padding: 10px 18px;
+    min-height: 44px;
+    cursor: pointer;
+  }
+  .table-wrap { overflow-x: auto; margin-top: 18px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  th, td { text-align: right; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: 500; }
+  tfoot td { font-weight: 500; border-top: 1px solid var(--ink-2); }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 14px;
+    display: grid;
+    gap: 6px;
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="brand">PHLAME</p>
+  <h1>Code promo <em>Elise-10</em></h1>
+  <p class="code-meta" id="code-meta">Chargement des données…</p>
+
+  <section class="hero" aria-labelledby="hero-label">
+    <div>
+      <p class="hero-label" id="hero-label">Chiffre d’affaires encaissé, TTC</p>
+      <p class="hero-value" id="hero-value">—</p>
+      <p class="hero-sub" id="hero-sub"></p>
+    </div>
+    <form class="controls" onsubmit="return false">
+      <div class="field">
+        <label for="period">Période</label>
+        <select id="period"></select>
+      </div>
+      <div class="range" id="range">
+        <div class="field"><label for="from">Du</label><input type="date" id="from"></div>
+        <div class="field"><label for="to">Au</label><input type="date" id="to"></div>
+      </div>
+      <div class="field">
+        <span class="field label" id="gran-label" style="color:var(--muted);font-size:14px">Regrouper par</span>
+        <div class="segmented" role="group" aria-labelledby="gran-label" id="granularity">
+          <button type="button" data-g="day" aria-pressed="true">Jour</button>
+          <button type="button" data-g="week" aria-pressed="false">Semaine</button>
+          <button type="button" data-g="month" aria-pressed="false">Mois</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <dl class="kpis" id="kpis"></dl>
+
+  <div class="empty" id="empty" hidden></div>
+
+  <section id="charts-section">
+    <h2>En détail</h2>
+    <p class="section-intro" id="charts-intro"></p>
+    <div class="charts">
+      <div class="chart wide">
+        <h3>Chiffre d’affaires TTC dans le temps</h3>
+        <p id="ts-caption">Par jour</p>
+        <div class="plot"><canvas id="c-revenue" role="img" aria-label="Chiffre d’affaires TTC par période, voir le tableau plus bas"></canvas></div>
+      </div>
+      <div class="chart">
+        <h3>Commandes</h3>
+        <p>Nombre de commandes passées avec le code</p>
+        <div class="plot"><canvas id="c-orders" role="img" aria-label="Nombre de commandes par période"></canvas></div>
+      </div>
+      <div class="chart">
+        <h3>Cumul du chiffre d’affaires</h3>
+        <p>Progression depuis le début de la période</p>
+        <div class="plot"><canvas id="c-cumul" role="img" aria-label="Chiffre d’affaires cumulé"></canvas></div>
+      </div>
+      <div class="chart">
+        <h3>Produits les plus vendus</h3>
+        <p>Chiffre d’affaires TTC par produit, après remise</p>
+        <div class="plot"><canvas id="c-products" role="img" aria-label="Chiffre d’affaires par produit"></canvas></div>
+      </div>
+      <div class="chart">
+        <h3>Jour de la semaine</h3>
+        <p>Répartition des commandes</p>
+        <div class="plot"><canvas id="c-weekday" role="img" aria-label="Commandes par jour de la semaine"></canvas></div>
+      </div>
+      <div class="chart wide">
+        <h3>Composition d’un euro encaissé</h3>
+        <p>Ce que contient le chiffre d’affaires TTC</p>
+        <div class="plot" style="height:90px"><canvas id="c-split" role="img" aria-label="Répartition entre produits hors taxe, TVA et livraison"></canvas></div>
+        <ul class="legend" id="split-legend"></ul>
+      </div>
+    </div>
+
+    <button type="button" class="table-toggle" id="table-toggle" aria-expanded="false" aria-controls="table-wrap">Voir les chiffres en tableau</button>
+    <div class="table-wrap" id="table-wrap" hidden></div>
+  </section>
+
+  <footer>
+    <span id="updated"></span>
+    <span>Les commandes annulées ne sont pas comptées. Les remboursements sont déduits du chiffre d’affaires net.</span>
+    <span>Aucune donnée client n’est publiée sur cette page. Mise à jour automatique toutes les heures depuis Shopify, ou à la demande depuis <a href="https://github.com/Nebuyr168/elise-10/actions/workflows/refresh.yml">GitHub Actions</a>.</span>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+(async function () {
+  const DATA_URL = "data/elise-10.json";
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let data;
+  try {
+    const res = await fetch(DATA_URL + "?t=" + Date.now());
+    if (!res.ok) throw new Error(res.status);
+    data = await res.json();
+  } catch (err) {
+    document.getElementById("code-meta").textContent = "Les données n’ont pas pu être chargées. Réessaie dans un instant.";
+    return;
+  }
+
+  const currency = data.shop?.currency || "EUR";
+  const fmtEur = new Intl.NumberFormat("fr-FR", { style: "currency", currency, maximumFractionDigits: 0 });
+  const fmtEurCents = new Intl.NumberFormat("fr-FR", { style: "currency", currency });
+  const fmtInt = new Intl.NumberFormat("fr-FR");
+  const fmtPct = new Intl.NumberFormat("fr-FR", { style: "percent", maximumFractionDigits: 1 });
+  const fmtDay = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" });
+  const fmtDayFull = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const fmtMonth = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" });
+  const fmtMonthShort = new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit" });
+  const fmtDateTime = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" });
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  // ----- Dates (all buckets keyed on YYYY-MM-DD strings, local time) -----
+  const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const lastData = (data.days || []).length ? data.days[data.days.length - 1].date : "";
+  const today = [iso(new Date()), lastData].sort().pop();
+  const monthKey = (s) => s.slice(0, 7);
+  const weekStart = (s) => { const d = parse(s); const day = (d.getDay() + 6) % 7; d.setDate(d.getDate() - day); return iso(d); };
+  const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return iso(d); };
+  const addMonths = (s, n) => { const d = parse(s + "-01"); d.setMonth(d.getMonth() + n); return iso(d).slice(0, 7); };
+
+  // ----- Code meta -----
+  const code = data.code || {};
+  const startsAt = code.startsAt ? new Date(code.startsAt) : null;
+  const endsAt = code.endsAt ? new Date(code.endsAt) : null;
+  const meta = document.getElementById("code-meta");
+  const active = code.status === "ACTIVE";
+  meta.innerHTML = "";
+  const status = document.createElement("span");
+  status.className = "status" + (active ? "" : " off");
+  status.textContent = active ? "Code actif" : "Code inactif";
+  meta.append(status);
+  const details = [];
+  if (code.summary) details.push(code.summary);
+  if (startsAt && endsAt) details.push(`valable du ${fmtDayFull.format(startsAt)} au ${fmtDayFull.format(endsAt)}`);
+  else if (startsAt) details.push(`valable depuis le ${fmtDayFull.format(startsAt)}`);
+  if (details.length) meta.append(document.createTextNode(" · " + details.join(". ") + "."));
+
+  document.getElementById("updated").textContent = data.generatedAt
+    ? `Dernière mise à jour le ${fmtDateTime.format(new Date(data.generatedAt))}.` : "";
+
+  // ----- Period selector -----
+  const days = data.days || [];
+  const launchDay = startsAt ? iso(startsAt) : today;
+  const firstDay = days.length && days[0].date < launchDay ? days[0].date : launchDay;
+  const firstMonth = monthKey(firstDay);
+  const periodSel = document.getElementById("period");
+  const optAll = new Option("Toute la période", "all");
+  periodSel.append(optAll);
+  const monthOptions = [];
+  for (let m = monthKey(today); m >= firstMonth; m = addMonths(m, -1)) monthOptions.push(m);
+  for (const m of monthOptions) periodSel.append(new Option(cap(fmtMonth.format(parse(m + "-01"))), m));
+  periodSel.append(new Option("Dates personnalisées", "custom"));
+
+  const rangeBox = document.getElementById("range");
+  const fromInput = document.getElementById("from");
+  const toInput = document.getElementById("to");
+  fromInput.value = firstDay; toInput.value = today;
+
+  let granularity = "day";
+  const granBox = document.getElementById("granularity");
+
+  function currentRange() {
+    const v = periodSel.value;
+    if (v === "all") return [firstDay < today ? firstDay : today, today];
+    if (v === "custom") {
+      const a = fromInput.value || firstDay, b = toInput.value || today;
+      return a <= b ? [a, b] : [b, a];
+    }
+    const end = addDays(addMonths(v, 1) + "-01", -1);
+    return [v + "-01", end];
+  }
+
+  function describeRange([a, b]) {
+    const v = periodSel.value;
+    if (v === "all") return "depuis le lancement";
+    if (v !== "custom") return "en " + fmtMonth.format(parse(a));
+    return `du ${fmtDay.format(parse(a))} au ${fmtDay.format(parse(b))}`;
+  }
+
+  // ----- Aggregation -----
+  const sum = (rows, k) => rows.reduce((s, r) => s + (r[k] || 0), 0);
+
+  function bucketKey(date) {
+    if (granularity === "day") return date;
+    if (granularity === "week") return weekStart(date);
+    return monthKey(date);
+  }
+  function bucketLabel(key, long) {
+    if (granularity === "day") return long ? cap(fmtDayFull.format(parse(key))) : fmtDay.format(parse(key));
+    if (granularity === "week") return (long ? "Semaine du " : "sem. ") + fmtDay.format(parse(key));
+    return cap((long ? fmtMonth : fmtMonthShort).format(parse(key + "-01")));
+  }
+  function allBucketKeys([a, b]) {
+    const keys = [];
+    if (granularity === "day") { for (let d = a; d <= b; d = addDays(d, 1)) keys.push(d); }
+    else if (granularity === "week") { for (let d = weekStart(a); d <= b; d = addDays(d, 7)) keys.push(d); }
+    else { for (let m = monthKey(a); m <= monthKey(b); m = addMonths(m, 1)) keys.push(m); }
+    return keys;
+  }
+
+  function buildBuckets(rows, range) {
+    const map = new Map();
+    for (const k of allBucketKeys(range)) map.set(k, { key: k, orders: 0, gross: 0, discount: 0, subtotal: 0, productsHT: 0, shipping: 0, tax: 0, total: 0, refunded: 0 });
+    for (const r of rows) {
+      const b = map.get(bucketKey(r.date)); if (!b) continue;
+      for (const k of ["orders", "gross", "discount", "subtotal", "productsHT", "shipping", "tax", "total", "refunded"]) b[k] += r[k] || 0;
+    }
+    return [...map.values()];
+  }
+
+  // ----- Charts -----
+  const charts = {};
+  function chartDefaults() {
+    Chart.defaults.font.family = css("--body");
+    Chart.defaults.font.size = 13;
+    Chart.defaults.color = css("--muted");
+    Chart.defaults.animation = reduced ? false : { duration: 350 };
+    Chart.defaults.plugins.legend.display = false;
+    Chart.defaults.plugins.tooltip.backgroundColor = css("--ink");
+    Chart.defaults.plugins.tooltip.titleColor = css("--surface");
+    Chart.defaults.plugins.tooltip.bodyColor = css("--surface");
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 0;
+    Chart.defaults.plugins.tooltip.displayColors = false;
+  }
+  const grid = () => ({ color: css("--line"), drawTicks: false });
+  const axisMoney = () => ({ grid: grid(), border: { display: false }, ticks: { callback: (v) => fmtEur.format(v), maxTicksLimit: 5 }, beginAtZero: true });
+  const axisCount = () => ({ grid: grid(), border: { display: false }, ticks: { precision: 0, maxTicksLimit: 5 }, beginAtZero: true });
+  const axisX = () => ({ grid: { display: false }, border: { color: css("--line") }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } });
+
+  function draw(id, config) {
+    if (charts[id]) charts[id].destroy();
+    charts[id] = new Chart(document.getElementById(id), config);
+  }
+
+  function render() {
+    const range = currentRange();
+    const [a, b] = range;
+    const rows = days.filter((d) => d.date >= a && d.date <= b);
+    const buckets = buildBuckets(rows, range);
+
+    const orders = sum(rows, "orders");
+    const total = sum(rows, "total");
+    const refunded = sum(rows, "refunded");
+    const net = total - refunded;
+    const productsHT = sum(rows, "productsHT");
+    const discount = sum(rows, "discount");
+    const gross = sum(rows, "gross");
+    const shipping = sum(rows, "shipping");
+    const tax = sum(rows, "tax");
+    const subtotal = sum(rows, "subtotal");
+
+    // Hero
+    const heroValue = document.getElementById("hero-value");
+    const [intPart, decPart] = fmtEurCents.format(total).split(",");
+    heroValue.innerHTML = "";
+    heroValue.append(document.createTextNode(intPart.replace(/\s?€$/, "")));
+    const small = document.createElement("small");
+    small.textContent = (decPart ? "," + decPart.replace(/\s?€$/, "") : "") + " €";
+    heroValue.append(small);
+    document.getElementById("hero-sub").textContent =
+      orders ? `${fmtInt.format(orders)} commande${orders > 1 ? "s" : ""} ${describeRange(range)}` : `Aucune commande ${describeRange(range)}`;
+
+    // KPIs
+    const kpis = [
+      ["Chiffre d’affaires net", fmtEurCents.format(net), refunded ? `après ${fmtEurCents.format(refunded)} remboursés` : "aucun remboursement"],
+      ["Produits hors taxe", fmtEurCents.format(productsHT), "hors livraison"],
+      ["Commandes", fmtInt.format(orders), orders && days.length ? `${fmtInt.format(rows.length)} jour${rows.length > 1 ? "s" : ""} avec vente` : ""],
+      ["Panier moyen TTC", orders ? fmtEurCents.format(total / orders) : "—", ""],
+      ["Remise accordée", fmtEurCents.format(discount), gross ? `${fmtPct.format(discount / gross)} du prix catalogue` : ""],
+      ["Prix catalogue avant remise", fmtEurCents.format(gross), "produits TTC"],
+      ["Frais de livraison", fmtEurCents.format(shipping), "facturés au client"],
+      ["TVA collectée", fmtEurCents.format(tax), ""],
+    ];
+    const dl = document.getElementById("kpis");
+    dl.innerHTML = "";
+    for (const [label, value, sub] of kpis) {
+      const div = document.createElement("div"); div.className = "kpi";
+      const dt = document.createElement("dt"); dt.textContent = label;
+      const dd = document.createElement("dd"); dd.textContent = value;
+      if (sub) { const s = document.createElement("small"); s.textContent = sub; dd.append(s); }
+      div.append(dt, dd); dl.append(div);
+    }
+
+    // Empty states
+    const empty = document.getElementById("empty");
+    const chartsSection = document.getElementById("charts-section");
+    if (!days.length) {
+      empty.hidden = false;
+      empty.innerHTML = `<strong>Aucune vente pour l’instant</strong>Le code est prêt. Les chiffres et les graphiques apparaîtront ici dès la première commande passée avec Elise-10.`;
+      chartsSection.hidden = true;
+      return;
+    }
+    if (!orders) {
+      empty.hidden = false;
+      empty.innerHTML = `<strong>Rien ${describeRange(range)}</strong>Aucune commande n’a utilisé le code sur cette période. Choisis une autre période pour voir les ventes.`;
+      chartsSection.hidden = true;
+      return;
+    }
+    empty.hidden = true;
+    chartsSection.hidden = false;
+    document.getElementById("charts-intro").textContent = `${cap(describeRange(range))}, ${bucketLabelPlural()}.`;
+    document.getElementById("ts-caption").textContent = "Par " + ({ day: "jour", week: "semaine", month: "mois" })[granularity];
+
+    const labels = buckets.map((x) => bucketLabel(x.key));
+    const longLabels = buckets.map((x) => bucketLabel(x.key, true));
+    const gold = css("--gold"), brown = css("--brown"), tan = css("--tan"), goldDeep = css("--gold-deep");
+    const titleCb = (items) => longLabels[items[0].dataIndex];
+
+    draw("c-revenue", {
+      type: "line",
+      data: { labels, datasets: [{ data: buckets.map((x) => x.total), borderColor: gold, backgroundColor: css("--wash"), fill: true, borderWidth: 2, pointRadius: buckets.length > 60 ? 0 : 4, pointHoverRadius: 6, pointBackgroundColor: gold, pointBorderColor: css("--surface"), pointBorderWidth: 2, tension: 0.15 }] },
+      options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, scales: { x: axisX(), y: axisMoney() }, plugins: { tooltip: { callbacks: { title: titleCb, label: (c) => fmtEurCents.format(c.parsed.y) } } } },
+    });
+    draw("c-orders", {
+      type: "bar",
+      data: { labels, datasets: [{ data: buckets.map((x) => x.orders), backgroundColor: brown, borderRadius: 4, borderSkipped: "bottom", maxBarThickness: 24 }] },
+      options: { maintainAspectRatio: false, scales: { x: axisX(), y: axisCount() }, plugins: { tooltip: { callbacks: { title: titleCb, label: (c) => `${fmtInt.format(c.parsed.y)} commande${c.parsed.y > 1 ? "s" : ""}` } } } },
+    });
+    let running = 0;
+    draw("c-cumul", {
+      type: "line",
+      data: { labels, datasets: [{ data: buckets.map((x) => (running += x.total)), borderColor: goldDeep, borderWidth: 2, pointRadius: 0, pointHoverRadius: 6, pointBackgroundColor: goldDeep, pointBorderColor: css("--surface"), pointBorderWidth: 2, stepped: false, tension: 0.15 }] },
+      options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, scales: { x: axisX(), y: axisMoney() }, plugins: { tooltip: { callbacks: { title: titleCb, label: (c) => fmtEurCents.format(c.parsed.y) + " cumulés" } } } },
+    });
+
+    const products = new Map();
+    for (const r of rows) for (const p of r.products || []) {
+      const e = products.get(p.title) || { title: p.title, qty: 0, revenue: 0 };
+      e.qty += p.qty; e.revenue += p.revenue; products.set(p.title, e);
+    }
+    const top = [...products.values()].sort((x, y) => y.revenue - x.revenue).slice(0, 8);
+    draw("c-products", {
+      type: "bar",
+      data: { labels: top.map((p) => p.title), datasets: [{ data: top.map((p) => p.revenue), backgroundColor: gold, borderRadius: 4, borderSkipped: "left", maxBarThickness: 22 }] },
+      options: { indexAxis: "y", maintainAspectRatio: false, scales: { x: { ...axisMoney() }, y: { grid: { display: false }, border: { display: false }, ticks: { autoSkip: false, callback: (v, i) => { const t = top[i].title; return t.length > 22 ? t.slice(0, 21) + "…" : t; } } } }, plugins: { tooltip: { callbacks: { title: (items) => top[items[0].dataIndex].title, label: (c) => `${fmtEurCents.format(c.parsed.x)} · ${fmtInt.format(top[c.dataIndex].qty)} vendu${top[c.dataIndex].qty > 1 ? "s" : ""}` } } } },
+    });
+
+    const wd = [0, 0, 0, 0, 0, 0, 0];
+    for (const r of rows) wd[(parse(r.date).getDay() + 6) % 7] += r.orders;
+    draw("c-weekday", {
+      type: "bar",
+      data: { labels: ["lun.", "mar.", "mer.", "jeu.", "ven.", "sam.", "dim."], datasets: [{ data: wd, backgroundColor: brown, borderRadius: 4, borderSkipped: "bottom", maxBarThickness: 24 }] },
+      options: { maintainAspectRatio: false, scales: { x: axisX(), y: axisCount() }, plugins: { tooltip: { callbacks: { label: (c) => `${fmtInt.format(c.parsed.y)} commande${c.parsed.y > 1 ? "s" : ""}` } } } },
+    });
+
+    const parts = [["Produits hors taxe", productsHT, goldDeep], ["TVA", tax, tan], ["Livraison", shipping, brown]];
+    draw("c-split", {
+      type: "bar",
+      data: { labels: [""], datasets: parts.map(([label, v, color]) => ({ label, data: [total ? v / total : 0], backgroundColor: color, borderColor: css("--surface"), borderWidth: { left: 0, right: 2, top: 0, bottom: 0 }, maxBarThickness: 28 })) },
+      options: { indexAxis: "y", maintainAspectRatio: false, scales: { x: { stacked: true, min: 0, max: 1, grid: { display: false }, border: { display: false }, ticks: { callback: (v) => fmtPct.format(v), maxTicksLimit: 6 } }, y: { stacked: true, display: false } }, plugins: { tooltip: { callbacks: { title: () => "", label: (c) => `${c.dataset.label} : ${fmtPct.format(c.parsed.x)} (${fmtEurCents.format(parts[c.datasetIndex][1])})` } } } },
+    });
+    const legend = document.getElementById("split-legend");
+    legend.innerHTML = "";
+    for (const [label, v, color] of parts) {
+      const li = document.createElement("li");
+      const sw = document.createElement("i"); sw.style.background = color;
+      li.append(sw, document.createTextNode(`${label} ${fmtPct.format(total ? v / total : 0)}`));
+      legend.append(li);
+    }
+
+    // Table
+    const wrap = document.getElementById("table-wrap");
+    const cols = [["Commandes", "orders", fmtInt], ["CA TTC", "total", fmtEurCents], ["Produits HT", "productsHT", fmtEurCents], ["Remise", "discount", fmtEurCents], ["Livraison", "shipping", fmtEurCents], ["TVA", "tax", fmtEurCents], ["Remboursé", "refunded", fmtEurCents]];
+    const table = document.createElement("table");
+    const thead = table.createTHead().insertRow();
+    for (const h of ["Période", ...cols.map((c) => c[0]), "CA net"]) { const th = document.createElement("th"); th.scope = "col"; th.textContent = h; thead.append(th); }
+    const tbody = table.createTBody();
+    for (const x of buckets.filter((x) => x.orders)) {
+      const tr = tbody.insertRow();
+      const th = document.createElement("th"); th.scope = "row"; th.textContent = bucketLabel(x.key, true); tr.append(th);
+      for (const [, k, f] of cols) tr.insertCell().textContent = f.format(x[k]);
+      tr.insertCell().textContent = fmtEurCents.format(x.total - x.refunded);
+    }
+    const tfoot = table.createTFoot().insertRow();
+    tfoot.insertCell().textContent = "Total";
+    for (const [, k, f] of cols) tfoot.insertCell().textContent = f.format(sum(rows, k));
+    tfoot.insertCell().textContent = fmtEurCents.format(net);
+    wrap.innerHTML = ""; wrap.append(table);
+  }
+
+  function bucketLabelPlural() {
+    return { day: "jour par jour", week: "semaine par semaine", month: "mois par mois" }[granularity];
+  }
+
+  periodSel.addEventListener("change", () => { rangeBox.classList.toggle("open", periodSel.value === "custom"); render(); });
+  fromInput.addEventListener("change", render);
+  toInput.addEventListener("change", render);
+  granBox.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-g]"); if (!btn) return;
+    granularity = btn.dataset.g;
+    for (const b of granBox.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === btn));
+    render();
+  });
+  document.getElementById("table-toggle").addEventListener("click", (e) => {
+    const wrap = document.getElementById("table-wrap");
+    wrap.hidden = !wrap.hidden;
+    e.currentTarget.setAttribute("aria-expanded", String(!wrap.hidden));
+    e.currentTarget.textContent = wrap.hidden ? "Voir les chiffres en tableau" : "Masquer le tableau";
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { chartDefaults(); render(); });
+
+  chartDefaults();
+  render();
+})();
+</script>
+</body>
+</html>
