@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-28T19:29:52.999Z",
-  "source": "manual",
+  "generatedAt": "2026-09-28T19:37:59.356Z",
+  "source": "github-action",
   "shop": {
     "name": "Phlame",
     "currency": "EUR",
@@ -9,7 +9,7 @@
   "code": {
     "title": "Elise-10",
     "status": "ACTIVE",
-    "summary": "10% de réduction sur les produits en achat ponctuel • Une utilisation par client",
+    "summary": "10% off one-time purchase products • One use per customer",
     "startsAt": "2026-09-28T18:00:50Z",
     "endsAt": "2027-01-10T22:30:30Z",
     "usageCount": 0
