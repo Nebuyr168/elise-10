@@ -22,6 +22,11 @@
     --brown: #5A4636;
     --tan: #D9C39A;
     --wash: rgba(201, 162, 77, 0.12);
+    /* Month series, validated all-pairs for color-blind separation */
+    --m1: #B07A12;
+    --m2: #1D7FA8;
+    --m3: #9E2F4A;
+    --m4: #6E48C0;
     --display: "Bodoni Moda", "Playfair Display", Georgia, serif;
     --body: "Jost", "Helvetica Neue", Arial, sans-serif;
   }
@@ -38,6 +43,10 @@
       --brown: #B59A76;
       --tan: #7A6446;
       --wash: rgba(227, 198, 132, 0.12);
+      --m1: #C08A1E;
+      --m2: #2C9FB8;
+      --m3: #C04A64;
+      --m4: #8A5CD8;
     }
   }
   :root[data-theme="dark"] {
@@ -52,6 +61,10 @@
     --brown: #B59A76;
     --tan: #7A6446;
     --wash: rgba(227, 198, 132, 0.12);
+    --m1: #C08A1E;
+    --m2: #2C9FB8;
+    --m3: #C04A64;
+    --m4: #8A5CD8;
   }
 
   * { box-sizing: border-box; }
@@ -280,6 +293,64 @@
     display: grid;
     gap: 6px;
   }
+  /* Export button */
+  .export {
+    font: inherit;
+    color: var(--surface);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 10px 18px;
+    min-height: 44px;
+    cursor: pointer;
+    justify-self: start;
+  }
+  .export:hover { background: var(--ink-2); border-color: var(--ink-2); }
+
+  /* Month comparison */
+  .months { margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .month-legend {
+    display: flex; flex-wrap: wrap; gap: 6px 20px;
+    font-size: 14px; color: var(--ink-2);
+    margin: 0 0 12px; padding: 0; list-style: none;
+  }
+  .month-legend li { display: inline-flex; align-items: center; gap: 8px; }
+  .month-legend i { width: 18px; height: 2px; display: inline-block; }
+  .cmp-wrap { overflow-x: auto; margin-top: 40px; }
+  .cmp-table td small { display: block; color: var(--muted); font-size: 12px; }
+  .cmp-table tbody th { font-weight: 400; color: var(--ink); }
+
+  .print-only, .print-img { display: none; }
+
+  /* Print / PDF export. The .printing class is set while the print dialog is open,
+     so charts are laid out at A4 width before Chart.js redraws them. */
+  @page { size: A4; margin: 14mm 12mm; }
+  html.printing .page { max-width: 186mm; padding: 0; }
+  html.printing .charts { grid-template-columns: 1fr 1fr; gap: 26px 22px; }
+  html.printing .plot { height: 200px; }
+  html.printing .chart.wide .plot { height: 220px; }
+  html.printing .kpis { grid-template-columns: repeat(4, 1fr); }
+  @media print {
+    body { background: #fff; font-size: 11pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .controls, .table-toggle, .no-print { display: none !important; }
+    .print-only { display: block; }
+    /* Chart.js clears canvases when the print layout resizes them, so each chart
+       is printed from a snapshot image taken just before printing. */
+    .plot canvas { display: none !important; }
+    .print-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .hero { grid-template-columns: 1fr; margin: 24px 0 20px; }
+    .hero-value { font-size: 56px; }
+    h1 { font-size: 40px; }
+    .table-wrap { display: block !important; overflow: visible; }
+    .chart, .kpis, .kpi, table, .empty { break-inside: avoid; }
+    .months { break-before: page; margin-top: 0; }
+    h2, h3 { break-after: avoid; }
+    .cmp-wrap, .table-wrap { overflow: visible; }
+    table { font-size: 8.5pt; }
+    th, td { padding: 5px 6px; }
+    .table-wrap tr { break-inside: avoid; }
+  }
+
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -288,6 +359,7 @@
   <p class="brand">PHLAME</p>
   <h1>Code promo <em>Elise-10</em></h1>
   <p class="code-meta" id="code-meta">Chargement des données…</p>
+  <p class="code-meta print-only" id="print-meta"></p>
 
   <section class="hero" aria-labelledby="hero-label">
     <div>
@@ -312,6 +384,7 @@
           <button type="button" data-g="month" aria-pressed="false">Mois</button>
         </div>
       </div>
+      <button type="button" class="export" id="export">Exporter en PDF</button>
     </form>
   </section>
 
@@ -358,12 +431,41 @@
 
     <button type="button" class="table-toggle" id="table-toggle" aria-expanded="false" aria-controls="table-wrap">Voir les chiffres en tableau</button>
     <div class="table-wrap" id="table-wrap" hidden></div>
+
+    <section class="months" aria-labelledby="months-title">
+      <h2 id="months-title">Mois par mois</h2>
+      <p class="section-intro" id="months-intro"></p>
+      <div class="charts">
+        <div class="chart wide">
+          <h3>Chiffre d’affaires TTC par mois</h3>
+          <p>Évolution indiquée par rapport au mois précédent</p>
+          <div class="plot"><canvas id="c-month-revenue" role="img" aria-label="Chiffre d’affaires TTC par mois, voir le tableau comparatif"></canvas></div>
+        </div>
+        <div class="chart wide">
+          <h3>Rythme des ventes, mois contre mois</h3>
+          <p>Chiffre d’affaires cumulé du 1er au dernier jour de chaque mois</p>
+          <ul class="month-legend" id="month-legend"></ul>
+          <div class="plot"><canvas id="c-month-pace" role="img" aria-label="Chiffre d’affaires cumulé par jour du mois, une courbe par mois"></canvas></div>
+        </div>
+        <div class="chart">
+          <h3>Commandes par mois</h3>
+          <p>Nombre de commandes passées avec le code</p>
+          <div class="plot"><canvas id="c-month-orders" role="img" aria-label="Commandes par mois"></canvas></div>
+        </div>
+        <div class="chart">
+          <h3>Panier moyen par mois</h3>
+          <p>Montant TTC moyen d’une commande</p>
+          <div class="plot"><canvas id="c-month-basket" role="img" aria-label="Panier moyen TTC par mois"></canvas></div>
+        </div>
+      </div>
+      <div class="cmp-wrap" id="cmp-wrap"></div>
+    </section>
   </section>
 
   <footer>
     <span id="updated"></span>
     <span>Les commandes annulées ne sont pas comptées. Les remboursements sont déduits du chiffre d’affaires net.</span>
-    <span>Aucune donnée client n’est publiée sur cette page. Mise à jour automatique toutes les heures depuis Shopify, ou à la demande depuis <a href="https://github.com/Nebuyr168/elise-10/actions/workflows/refresh.yml">GitHub Actions</a>.</span>
+    <span>Aucune donnée client n’est publiée sur cette page. Mise à jour automatique toutes les heures depuis Shopify<span class="no-print">, ou à la demande depuis <a href="https://github.com/Nebuyr168/elise-10/actions/workflows/refresh.yml">GitHub Actions</a></span>.</span>
   </footer>
 </div>
 
@@ -514,7 +616,7 @@
   const grid = () => ({ color: css("--line"), drawTicks: false });
   const axisMoney = () => ({ grid: grid(), border: { display: false }, ticks: { callback: (v) => fmtEur.format(v), maxTicksLimit: 5 }, beginAtZero: true });
   const axisCount = () => ({ grid: grid(), border: { display: false }, ticks: { precision: 0, maxTicksLimit: 5 }, beginAtZero: true });
-  const axisX = () => ({ grid: { display: false }, border: { color: css("--line") }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } });
+  const axisX = () => ({ grid: { display: false }, border: { color: css("--line") }, ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 16, maxTicksLimit: 10 } });
 
   function draw(id, config) {
     if (charts[id]) charts[id].destroy();
@@ -621,7 +723,7 @@
     draw("c-products", {
       type: "bar",
       data: { labels: top.map((p) => p.title), datasets: [{ data: top.map((p) => p.revenue), backgroundColor: gold, borderRadius: 4, borderSkipped: "left", maxBarThickness: 22 }] },
-      options: { indexAxis: "y", maintainAspectRatio: false, scales: { x: { ...axisMoney() }, y: { grid: { display: false }, border: { display: false }, ticks: { autoSkip: false, callback: (v, i) => { const t = top[i].title; return t.length > 22 ? t.slice(0, 21) + "…" : t; } } } }, plugins: { tooltip: { callbacks: { title: (items) => top[items[0].dataIndex].title, label: (c) => `${fmtEurCents.format(c.parsed.x)} · ${fmtInt.format(top[c.dataIndex].qty)} vendu${top[c.dataIndex].qty > 1 ? "s" : ""}` } } } },
+      options: { indexAxis: "y", maintainAspectRatio: false, scales: { x: { ...axisMoney(), ticks: { ...axisMoney().ticks, maxRotation: 0, maxTicksLimit: 4 } }, y: { grid: { display: false }, border: { display: false }, ticks: { autoSkip: false, callback: (v, i) => { const t = top[i].title; return t.length > 22 ? t.slice(0, 21) + "…" : t; } } } }, plugins: { tooltip: { callbacks: { title: (items) => top[items[0].dataIndex].title, label: (c) => `${fmtEurCents.format(c.parsed.x)} · ${fmtInt.format(top[c.dataIndex].qty)} vendu${top[c.dataIndex].qty > 1 ? "s" : ""}` } } } },
     });
 
     const wd = [0, 0, 0, 0, 0, 0, 0];
@@ -665,7 +767,289 @@
     for (const [, k, f] of cols) tfoot.insertCell().textContent = f.format(sum(rows, k));
     tfoot.insertCell().textContent = fmtEurCents.format(net);
     wrap.innerHTML = ""; wrap.append(table);
+
+    renderMonths(range);
   }
+
+  // ----- Month comparison -----
+  const MONTH_SLOTS = ["--m1", "--m2", "--m3", "--m4"];
+  const MAX_PACE_MONTHS = MONTH_SLOTS.length;
+  const fmtVarPct = new Intl.NumberFormat("fr-FR", { style: "percent", maximumFractionDigits: 0 });
+  const monthsBetween = (a, b) => (Number(b.slice(0, 4)) - Number(a.slice(0, 4))) * 12 + Number(b.slice(5, 7)) - Number(a.slice(5, 7));
+  // A month keeps its color whatever the filter, and any 4 consecutive months get 4 distinct colors.
+  const monthColor = (m) => css(MONTH_SLOTS[((monthsBetween(firstMonth, m) % 4) + 4) % 4]);
+  const daysInMonth = (m) => new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0).getDate();
+  const monthName = (m, short) => cap((short ? fmtMonthShort : fmtMonth).format(parse(m + "-01")));
+  const variation = (cur, prev) => (prev > 0 ? (cur - prev) / prev : null);
+  const fmtVar = (v) => (v === null ? "" : (v > 0 ? "+" : v < 0 ? "−" : "") + fmtVarPct.format(Math.abs(v)));
+
+  function comparedMonths([a, b]) {
+    let start = monthKey(a);
+    const singleMonth = periodSel.value !== "all" && periodSel.value !== "custom";
+    if (singleMonth) start = addMonths(start, -1);
+    if (start < firstMonth) start = firstMonth;
+    const list = [];
+    for (let m = start; m <= monthKey(b); m = addMonths(m, 1)) list.push(m);
+    return list;
+  }
+
+  // Days of the month during which the code could be used. The launch month, the current
+  // month and the month the code ends are partial, so comparing them would mislead.
+  const endDay = endsAt ? iso(endsAt) : null;
+  function monthCoverage(m) {
+    const n = daysInMonth(m);
+    const lastDay = endDay && endDay < today ? endDay : today;
+    const from = m === monthKey(launchDay) ? Number(launchDay.slice(8)) : 1;
+    const to = m === monthKey(lastDay) ? Number(lastDay.slice(8)) : n;
+    return { from, to, partial: from > 1 || to < n };
+  }
+  const coverageText = (c) => `du ${c.from} au ${c.to}`;
+
+  function monthStats(m) {
+    const rows = days.filter((d) => monthKey(d.date) === m);
+    const s = { key: m, rows, cov: monthCoverage(m), orders: sum(rows, "orders"), total: sum(rows, "total"), refunded: sum(rows, "refunded"), discount: sum(rows, "discount") };
+    s.net = s.total - s.refunded;
+    s.basket = s.orders ? s.total / s.orders : 0;
+    return s;
+  }
+
+  // Draws a value (and an optional muted second line) above each bar.
+  const barLabels = (texts) => ({
+    id: "barLabels",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      chart.getDatasetMeta(0).data.forEach((bar, i) => {
+        const [main, sub] = texts[i];
+        ctx.font = `500 13px ${css("--body")}`;
+        ctx.fillStyle = css("--ink");
+        ctx.fillText(main, bar.x, bar.y - (sub ? 22 : 6));
+        if (sub) {
+          ctx.font = `400 12px ${css("--body")}`;
+          ctx.fillStyle = css("--muted");
+          ctx.fillText(sub, bar.x, bar.y - 6);
+        }
+      });
+      ctx.restore();
+    },
+  });
+
+  // Names each line at its last point; a label that would collide with one already placed is left to the legend.
+  const endLabels = {
+    id: "endLabels",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const items = chart.data.datasets.map((ds, i) => {
+        let j = ds.data.length - 1;
+        while (j >= 0 && ds.data[j] == null) j--;
+        if (j < 0) return null;
+        const pt = chart.getDatasetMeta(i).data[j];
+        return { text: ds.shortLabel, x: pt.x, y: pt.y };
+      }).filter(Boolean).sort((p, q) => p.y - q.y);
+      const placed = [];
+      ctx.save();
+      ctx.font = `400 12px ${css("--body")}`;
+      ctx.fillStyle = css("--ink-2");
+      ctx.textBaseline = "middle";
+      for (const it of items) {
+        if (placed.some((y) => Math.abs(y - it.y) < 14)) continue;
+        placed.push(it.y);
+        ctx.fillText(it.text, it.x + 8, it.y);
+      }
+      ctx.restore();
+    },
+  };
+
+  function renderMonths(range) {
+    const months = comparedMonths(range);
+    const stats = months.map(monthStats);
+    const prevOf = (i) => (i > 0 ? stats[i - 1] : (addMonths(months[0], -1) >= firstMonth ? monthStats(addMonths(months[0], -1)) : null));
+    // Evolution vs the previous month, only when both months are complete.
+    const evolution = (i, get) => {
+      const p = prevOf(i);
+      return p && !p.cov.partial && !stats[i].cov.partial ? variation(get(stats[i]), get(p)) : null;
+    };
+
+    const first = months[0], last = months[months.length - 1];
+    const singleMonth = periodSel.value !== "all" && periodSel.value !== "custom";
+    const intro = singleMonth && months.length > 1
+      ? `${monthName(last)} comparé à ${fmtMonth.format(parse(first + "-01"))}.`
+      : months.length > 1
+        ? `De ${fmtMonth.format(parse(first + "-01"))} à ${fmtMonth.format(parse(last + "-01"))}, mois entiers.`
+        : `${monthName(first)}. La comparaison apparaîtra dès le mois suivant.`;
+    const partialNote = stats.some((s) => s.cov.partial)
+      ? " Un mois partiel, comme celui du lancement ou le mois en cours, n’a pas d’évolution calculée : on le compare jour par jour sur le graphique du rythme."
+      : "";
+    document.getElementById("months-intro").textContent = intro + partialNote;
+
+    const labels = months.map((m) => monthName(m, true));
+    const longLabels = stats.map((s) => monthName(s.key) + (s.cov.partial ? `, ${coverageText(s.cov)}` : ""));
+    const titleCb = (items) => longLabels[items[0].dataIndex];
+    const barOpts = (axis, tooltipLabel, texts) => ({
+      options: {
+        maintainAspectRatio: false,
+        layout: { padding: { top: 40 } },
+        scales: { x: { ...axisX(), ticks: { maxRotation: 0, autoSkip: false } }, y: axis },
+        plugins: { tooltip: { callbacks: { title: titleCb, label: tooltipLabel } } },
+      },
+      plugins: [barLabels(texts)],
+    });
+
+    const revVar = stats.map((_, i) => evolution(i, (s) => s.total));
+    draw("c-month-revenue", {
+      type: "bar",
+      data: { labels, datasets: [{ data: stats.map((s) => s.total), backgroundColor: css("--gold"), borderRadius: 4, borderSkipped: "bottom", maxBarThickness: 24 }] },
+      ...barOpts(axisMoney(), (c) => {
+        const v = revVar[c.dataIndex];
+        return v === null ? fmtEurCents.format(c.parsed.y) : `${fmtEurCents.format(c.parsed.y)} (${fmtVar(v)} sur le mois précédent)`;
+      }, stats.map((s, i) => [fmtEur.format(s.total), s.cov.partial ? "mois partiel" : fmtVar(revVar[i])])),
+    });
+
+    draw("c-month-orders", {
+      type: "bar",
+      data: { labels, datasets: [{ data: stats.map((s) => s.orders), backgroundColor: css("--brown"), borderRadius: 4, borderSkipped: "bottom", maxBarThickness: 24 }] },
+      ...barOpts(axisCount(), (c) => `${fmtInt.format(c.parsed.y)} commande${c.parsed.y > 1 ? "s" : ""}`,
+        stats.map((s) => [fmtInt.format(s.orders)])),
+    });
+
+    draw("c-month-basket", {
+      type: "bar",
+      data: { labels, datasets: [{ data: stats.map((s) => s.basket), backgroundColor: css("--gold-deep"), borderRadius: 4, borderSkipped: "bottom", maxBarThickness: 24 }] },
+      ...barOpts(axisMoney(), (c) => fmtEurCents.format(c.parsed.y),
+        stats.map((s) => [s.orders ? fmtEur.format(s.basket) : "—"])),
+    });
+
+    // Pace: cumulative revenue by day of month, one line per month (4 most recent at most).
+    const paceMonths = months.slice(-MAX_PACE_MONTHS);
+    const dayLabels = Array.from({ length: 31 }, (_, i) => String(i + 1));
+    const surface = css("--surface");
+    const datasets = paceMonths.map((m) => {
+      const n = daysInMonth(m);
+      const byDay = new Array(n).fill(0);
+      for (const r of days) if (monthKey(r.date) === m) byDay[Number(r.date.slice(8)) - 1] += r.total;
+      const cov = monthCoverage(m);
+      let running = 0;
+      const data = dayLabels.map((_, i) => {
+        const d = i + 1;
+        if (d < cov.from || d > cov.to) return null;
+        running += byDay[i];
+        return running;
+      });
+      const lastIdx = data.reduce((acc, v, i) => (v == null ? acc : i), -1);
+      const color = monthColor(m);
+      return {
+        label: monthName(m), shortLabel: monthName(m, true), data,
+        borderColor: color, backgroundColor: color, borderWidth: 2, tension: 0.15, spanGaps: false,
+        pointRadius: data.map((_, i) => (i === lastIdx ? 4 : 0)), pointHoverRadius: 6,
+        pointBackgroundColor: color, pointBorderColor: surface, pointBorderWidth: 2,
+      };
+    });
+    draw("c-month-pace", {
+      type: "line",
+      data: { labels: dayLabels, datasets },
+      options: {
+        maintainAspectRatio: false,
+        layout: { padding: { right: 64 } },
+        interaction: { mode: "index", intersect: false },
+        scales: { x: { ...axisX(), ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 11 } }, y: axisMoney() },
+        plugins: { tooltip: { filter: (item) => item.parsed.y != null, callbacks: { title: (items) => `Jour ${items[0].label}`, label: (c) => `${c.dataset.label} : ${fmtEurCents.format(c.parsed.y)}` } } },
+      },
+      plugins: [endLabels],
+    });
+    const legend = document.getElementById("month-legend");
+    legend.innerHTML = "";
+    for (const ds of datasets) {
+      const li = document.createElement("li");
+      const sw = document.createElement("i"); sw.style.background = ds.borderColor;
+      li.append(sw, document.createTextNode(ds.label));
+      legend.append(li);
+    }
+
+    // Comparison table, months as columns.
+    const metrics = [
+      ["Chiffre d’affaires TTC", (s) => s.total, fmtEurCents],
+      ["Commandes", (s) => s.orders, fmtInt],
+      ["Panier moyen TTC", (s) => s.basket, fmtEurCents],
+      ["Remise accordée", (s) => s.discount, fmtEurCents],
+      ["Chiffre d’affaires net", (s) => s.net, fmtEurCents],
+    ];
+    const table = document.createElement("table");
+    table.className = "cmp-table";
+    const caption = document.createElement("caption");
+    caption.textContent = "Comparaison des mois, avec l’évolution par rapport au mois précédent";
+    caption.style.cssText = "text-align:left;color:var(--muted);font-size:14px;padding-bottom:8px";
+    table.append(caption);
+    const head = table.createTHead().insertRow();
+    head.append(document.createElement("th"));
+    for (const s of stats) {
+      const th = document.createElement("th"); th.scope = "col"; th.textContent = monthName(s.key);
+      if (s.cov.partial) { const sm = document.createElement("small"); sm.style.cssText = "display:block;font-weight:400"; sm.textContent = coverageText(s.cov); th.append(sm); }
+      head.append(th);
+    }
+    const body = table.createTBody();
+    for (const [label, get, f] of metrics) {
+      const tr = body.insertRow();
+      const th = document.createElement("th"); th.scope = "row"; th.textContent = label; tr.append(th);
+      stats.forEach((s, i) => {
+        const td = tr.insertCell();
+        td.textContent = label === "Panier moyen TTC" && !s.orders ? "—" : f.format(get(s));
+        const v = evolution(i, get);
+        if (v !== null) { const sm = document.createElement("small"); sm.textContent = fmtVar(v); td.append(sm); }
+      });
+    }
+    const cmp = document.getElementById("cmp-wrap");
+    cmp.innerHTML = ""; cmp.append(table);
+  }
+
+  // ----- PDF export (browser print, A4 light layout) -----
+  let printing = false, savedTheme = null, savedTitle = "";
+  function periodLabel() {
+    const v = periodSel.value;
+    if (v === "custom") { const [a, b] = currentRange(); return `du ${fmtDay.format(parse(a))} au ${fmtDay.format(parse(b))}`; }
+    return periodSel.selectedOptions[0].text;
+  }
+  function beforePrint() {
+    if (printing) return;
+    printing = true;
+    const root = document.documentElement;
+    savedTheme = root.getAttribute("data-theme");
+    savedTitle = document.title;
+    root.setAttribute("data-theme", "light");
+    root.classList.add("printing");
+    document.title = `Elise-10 - ${periodLabel()}`;
+    document.getElementById("print-meta").textContent =
+      `Rapport : ${periodLabel()}. Exporté le ${fmtDateTime.format(new Date())}.`;
+    Chart.defaults.devicePixelRatio = 2;
+    chartDefaults();
+    Chart.defaults.animation = false;
+    render();
+    for (const [id, chart] of Object.entries(charts)) {
+      const canvas = document.getElementById(id);
+      if (!canvas.width || !canvas.height) continue;
+      const img = new Image();
+      img.className = "print-img";
+      img.alt = canvas.getAttribute("aria-label") || "";
+      img.src = chart.toBase64Image("image/png", 1);
+      canvas.after(img);
+    }
+  }
+  function afterPrint() {
+    if (!printing) return;
+    printing = false;
+    document.querySelectorAll(".print-img").forEach((img) => img.remove());
+    const root = document.documentElement;
+    if (savedTheme === null) root.removeAttribute("data-theme"); else root.setAttribute("data-theme", savedTheme);
+    root.classList.remove("printing");
+    document.title = savedTitle;
+    Chart.defaults.devicePixelRatio = undefined;
+    chartDefaults();
+    render();
+  }
+  window.addEventListener("beforeprint", beforePrint);
+  window.addEventListener("afterprint", afterPrint);
+  document.getElementById("export").addEventListener("click", () => { beforePrint(); window.print(); });
 
   function bucketLabelPlural() {
     return { day: "jour par jour", week: "semaine par semaine", month: "mois par mois" }[granularity];
