@@ -77,7 +77,7 @@ async function graphql(query, variables) {
   const token = await getAccessToken(store);
   const res = await fetch(`https://${store}/admin/api/${API_VERSION}/graphql.json`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "X-Shopify-Access-Token": token },
+    headers: { "Content-Type": "application/json", "Accept-Language": "fr-FR", "X-Shopify-Access-Token": token },
     body: JSON.stringify({ query, variables }),
   });
   if (!res.ok) throw new Error(`Shopify API responded ${res.status}: ${await res.text()}`);
